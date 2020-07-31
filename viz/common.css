@@ -14,3 +14,25 @@
   --infobar-side-width: 400px;
   --infobar-bottom-height: 195px;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+}
+
+a {
+  color: var(--color-positive-text);
+}
+
+body {
+  font-family: "Karla", sans-serif;
+  font-size: 20px;
+  color: var(--color-dark);
+}

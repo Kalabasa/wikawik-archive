@@ -335,9 +335,10 @@ const LANGUAGE_LOCALISED_RENAME = {
   },
 };
 
-// PSA merges some languages into other languagea. Need to separate them back.
+// PSA merges some languages into other languages. Need to separate them back.
 const FORCE_TRANSFER_HOUSEHOLDS = {
   // PSA does not specify Bikol languages. There are many different Bikol languages.
+  // Let's specify the specific Bikol languages
   // Camarines Sur
   "0517": {
     // https://www.ethnologue.com/contribution/109586
