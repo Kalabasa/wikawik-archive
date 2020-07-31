@@ -9,7 +9,7 @@ setMessages("tagalog", {
   areaInfoLabel: () => "Kaalaman sa lokalidad",
   languageInfoLabel: () => "Kaalaman sa wika",
   languageVitality: () => "Kalagayang panlinggwistika",
-  fromWikipedia: () => "Mula sa Wikipedia",
+  fromWikipedia: () => "Sipi mula sa Wikipedia",
   vitalityExtinct: () => "Patay",
   vitalityEndangered: () => "Nanganganib",
   vitalitySafe: () => "Ligtas",

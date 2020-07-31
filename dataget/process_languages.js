@@ -12,7 +12,7 @@ const kwfLanguages = require("./data/kwf.json");
 
 // filter out very small populations
 const MIN_PROPORTION_P = 0.08;
-const MIN_PROPORTION_Q = 0.4;
+const MIN_PROPORTION_Q = 0.25;
 
 // Don't count these languages from the census
 const BLACKLIST = [
@@ -224,6 +224,10 @@ const FORCE_SYNONYMS = [
   ["binatak", "batak"],
   // Spelling
   ["ivatan", "ibatan"],
+  // Place
+  ["ata manobo", "kailawan"],
+  // Spellings
+  ["magkonana", "magkunana", "kaunana"],
 ];
 
 // Disambiguiate language based on region
@@ -569,8 +573,7 @@ for (const [code, counts] of countMap.entries()) {
     }
 
     const languageTotal = totals[language];
-    const exponent =
-      1.5 ** (Math.atan(languageTotal / 80 - 1) * (Math.PI / 2));
+    const exponent = 1.5 ** (Math.atan(languageTotal / 80 - 1) * (Math.PI / 2));
 
     const p = (count / totals[code]) ** exponent;
     const q = count / languageTotal;

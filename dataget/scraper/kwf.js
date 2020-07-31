@@ -60,7 +60,7 @@ const columnProps = {
 
 async function fetchData() {
   return axios
-    .get("http://kwf.gov.ph/wp-json/wp/v2/pages?slug=wika")
+    .get("https://kwf.gov.ph/wp-json/wp/v2/pages?slug=wika")
     .then((response) => {
       const html = response.data[0].content.rendered;
 

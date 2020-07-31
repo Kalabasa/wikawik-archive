@@ -585,6 +585,11 @@ ssf@~0.11.2:
   dependencies:
     frac "~1.1.2"
 
+stopword@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/stopword/-/stopword-1.0.1.tgz#b91f873c9d3e870af47189c84423eb0280e9dfbc"
+  integrity sha512-mcBsIyr5/cJ0QMlXd8P5vtFyvHPTP8m9mOs8OCu84uAOc9QVRpBUz9KhHu0T5rZDycu5NvHSu3/m1Qz7m2ZCiw==
+
 stream-concat@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/stream-concat/-/stream-concat-0.1.0.tgz#222ef164d073f99c136b9491bcb8ae2bb7577bbb"

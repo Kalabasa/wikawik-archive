@@ -2,7 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const wiki = require("wikijs").default;
 const cldrSegmentation = require("cldr-segmentation");
-const { normalizeName, psgcData } = require("./common");
+const stopword = require("stopword");
+const { psgcData } = require("./common");
 
 const languages = require("./data/languages.json");
 const kwf = require("./data/kwf.json");
@@ -19,7 +20,11 @@ const PAGE_TITLES = {
   ata: "Ata language (Negros)",
   "hatang kayi": "Remontado Agta language",
   dupaningan: "Dupaningan Agta",
+  "illanen manobo": "Ilianen language",
   "mag-antsi": "Antsi language",
+  "1300": "Metro Manila",
+  "1247": "Cotabato",
+  "1263": "South Cotabato",
 };
 
 // Manually correct outdated or incorrect scraped information
@@ -49,7 +54,7 @@ const DESCRIPTION_GOOD_WORDS = [
   "linguistic",
 ];
 // Language names are good indicators too, but not as much, because they can also be used to refer to the peoples.
-const DESCRIPTION_LANGUAGE_WORDS = Object.keys(languages.synonyms);
+const DESCRIPTION_LANGUAGE_WORDS = languages.list;
 // Language facts are usually dumped into a Demographics section, which includes these unwanted topics.
 const DESCRIPTION_BAD_WORDS = ["population", "density"];
 // For sentence flow, remove connector words from the beginning of paragraphs
@@ -81,11 +86,13 @@ const areaCodeToName = psgcData
   }, {});
 
 const wikiJSOptions = {
+  apiUrl: "http://en.wikipedia.org/w/api.php",
   headers: {
     "User-Agent":
-      "wikavizMetadataFetch/0 (https://github.com/Kalabasa/wikaviz; lgmrada@gmail.com) wiki.js/6.0.1",
+      "wikawikMetadataFetch/0 (https://github.com/Kalabasa/wikawik; lgmrada@gmail.com) wiki.js/6.0.1",
   },
 };
+const wikiObj = wiki(wikiJSOptions);
 
 const metadataEntries = Promise.all([
   ...Object.entries(areaCodeToName).map(fetchAreaMetadataEntry),
@@ -96,13 +103,12 @@ async function fetchAreaMetadataEntry([code, name]) {
   try {
     console.log(`Fetching metadata for ${name} (${code})...`);
     const query =
-      PAGE_TITLES[code] ||
-      (code === "1300" ? "metro manila" : `${name} province`);
+      PAGE_TITLES[code] || `province of ${name.replace(/\(.*?\)/g, "").trim()}`;
 
-    const page = wiki(wikiJSOptions).find(query);
-    const info = page.then((page) => page.fullInfo());
-    const summary = page.then((page) => page.summary());
-    const content = page.then((page) => page.content());
+    const wikiPage = fetchWikiPage(query);
+    const info = wikiPage.then((page) => page.fullInfo());
+    const summary = wikiPage.then((page) => page.summary());
+    const content = wikiPage.then((page) => page.content());
 
     const metadata = {};
 
@@ -126,38 +132,39 @@ async function fetchAreaMetadataEntry([code, name]) {
       .map((item) => item.content)
       // select only paragraphs with good words
       .filter((content) => {
-        const words = cldrSegmentation
-          .wordSplit(content)
-          .filter((word) => word.match(/\w{3,}/));
+        const words = stopword.removeStopwords(
+          cldrSegmentation.wordSplit(content)
+        );
         const score = words.reduce(
           (acc, word) =>
             acc +
             (DESCRIPTION_GOOD_WORDS.includes(word.toLocaleLowerCase()) ? 1 : 0),
           0
         );
-        return score / words.length > 0.005;
+        return score / words.length > 0.05;
       })
       // remove sentences with bad topics from each paragraph
       .map((content) =>
         cldrSegmentation
           .sentenceSplit(content, cldrSegmentation.suppressions.en)
-          .filter(
-            (sentence) =>
-              cldrSegmentation
-                .wordSplit(sentence)
-                .reduce(
-                  (acc, word) => (
-                    (word = word.toLocaleLowerCase()),
-                    acc +
-                      (DESCRIPTION_GOOD_WORDS.includes(word) ? 1 : 0) +
-                      (DESCRIPTION_LANGUAGE_WORDS.includes(word) ? 0.5 : 0) +
-                      (DESCRIPTION_BAD_WORDS.includes(word) ? -1 : 0)
-                  ),
-                  0
-                ) > 1
-          )
+          .filter((sentence) => {
+            const words = stopword.removeStopwords(
+              cldrSegmentation.wordSplit(sentence)
+            );
+            const score = words.reduce(
+              (acc, word) => (
+                (word = word.toLocaleLowerCase()),
+                acc +
+                  (DESCRIPTION_GOOD_WORDS.includes(word) ? 1 : 0) +
+                  (DESCRIPTION_LANGUAGE_WORDS.includes(word) ? 0.1 : 0) +
+                  (DESCRIPTION_BAD_WORDS.includes(word) ? -1 : 0)
+              ),
+              0
+            );
+            return score / words.length > 0.1;
+          })
           // remove awkward connector words
-          .map((sentence, i) => {
+          .map((sentence) => {
             for (const prefix of REMOVE_SENTENCE_PREFIXES) {
               if (sentence.toLocaleLowerCase().startsWith(prefix)) {
                 sentence = sentence.slice(prefix.length);
@@ -188,22 +195,24 @@ async function fetchAreaMetadataEntry([code, name]) {
         })
         .slice(0, Math.max(1, 4 - languageSentencesCount)),
       ...languageParagraphs,
-    ].map(
-      (paragraph) =>
-        paragraph
-          .map((sentence) => sentence.replace(/\s*?\(.*?\)/g, "").trim())
-          .join(" ")
-          .replace(/\.(?=\w)/g, ". ") // some periods get no space after them. quick fix
-          .replace(/\s+/g, " ") // condense extra space
-    );
+    ]
+      .map(
+        (paragraph) =>
+          paragraph
+            .map((sentence) => sentence.replace(/\s*?\(.*?\)/g, "").trim())
+            .join(" ")
+            .replace(/\.(?=\w)/g, ". ") // some periods get no space after them. quick fix
+            .replace(/\s+/g, " ") // condense extra space
+      )
+      .filter((s) => s.length);
 
-    metadata.sources = [(await page).url()];
+    metadata.sources = [(await wikiPage).url()];
 
     console.log(`Done fetching metadata for ${name} (${code})`);
     return [code, metadata];
   } catch (error) {
-    console.warn(`Error fetching metadata for ${name}`);
-    console.warn("  Error: " + error);
+    console.error(`Error fetching metadata for ${name}`);
+    console.error("  Error: " + error);
   }
 }
 
@@ -212,9 +221,7 @@ async function fetchLanguageMetadataEntry(language) {
     console.log(`Fetching metadata for ${language}...`);
     const query = languageTitleMap[language] || `${language} language`;
 
-    const wikiPage = wiki(wikiJSOptions)
-      .page(query)
-      .catch(() => wiki(wikiJSOptions).find(query));
+    const wikiPage = fetchWikiPage(query);
     const summary = wikiPage.then((page) => page.summary());
     const info = wikiPage.then((page) => page.fullInfo());
 
@@ -254,9 +261,13 @@ async function fetchLanguageMetadataEntry(language) {
     console.log(`Done fetching metadata for ${language}`);
     return [language, metadata];
   } catch (error) {
-    console.warn(`Error fetching metadata for ${language}`);
-    console.warn("  Error: " + error);
+    console.error(`Error fetching metadata for ${language}`);
+    console.error("  Error: " + error);
   }
+}
+
+function fetchWikiPage(query) {
+  return wikiObj.page(query).catch(() => wikiObj.find(query));
 }
 
 function formatName(name) {
@@ -279,7 +290,7 @@ function formatName(name) {
 
 function errorReporter(fieldName) {
   return (reason) => {
-    console.warn(`Error fetching ${fieldName}`);
+    console.warn(`Error while fetching ${fieldName}`);
     throw reason;
   };
 }
@@ -292,11 +303,13 @@ function forceMetadata(map) {
 }
 
 function deepAssign(dst, src) {
-  for (const [key, value] of Object.entries(src)) {
-    if (typeof dst[key] === "object") {
-      deepAssign(dst[key], value);
-    } else {
-      dst[key] = value;
+  if (dst) {
+    for (const [key, value] of Object.entries(src)) {
+      if (typeof dst[key] === "object") {
+        deepAssign(dst[key], value);
+      } else {
+        dst[key] = value;
+      }
     }
   }
 }

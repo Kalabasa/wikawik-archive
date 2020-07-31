@@ -8,6 +8,7 @@
     "glob": "^7.1.6",
     "polygon-clipping": "^0.15.1",
     "simplify-js": "^1.2.4",
+    "stopword": "^1.0.1",
     "topojson": "^3.0.2",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
