@@ -22,10 +22,29 @@ const PAGE_TITLES = {
   dupaningan: "Dupaningan Agta",
   "illanen manobo": "Ilianen language",
   "mag-antsi": "Antsi language",
+  binatak: "Batak people (Philippines)", // No language article
+  bugkalot: "Ilongot language",
+  iwak: "Iwaak language",
+  "iriga agta": "Mount Iriga Agta language",
+  eskaya: "Eskayan language",
+  "saranggani manobo": "Sarangani language",
+  "pala'wan": "Palawano langauge",
   "1300": "Metro Manila",
   "1247": "Cotabato",
   "1263": "South Cotabato",
 };
+
+// There are no Wikipedia pages about these languages.
+const NO_PAGE = [
+  "binatak",
+  "direrayaan",
+  "magkonana",
+  "tigwahanon", // included as "divergent dialect" of Matigsalug
+  "dibabawon", // included as "divergent dialect" of Agusan Manobo
+  "aromanen",
+  "bangon",
+  "palawani",
+];
 
 // Manually correct outdated or incorrect scraped information
 const FORCE_METADATA = {
@@ -147,7 +166,10 @@ async function fetchAreaMetadataEntry([code, name]) {
       .map((content) =>
         cldrSegmentation
           .sentenceSplit(content, cldrSegmentation.suppressions.en)
-          .filter((sentence) => {
+          .filter((sentence, i) => {
+            // First sentence of paragraph is important
+            if (i == 0) return true;
+
             const words = stopword.removeStopwords(
               cldrSegmentation.wordSplit(sentence)
             );
@@ -161,7 +183,7 @@ async function fetchAreaMetadataEntry([code, name]) {
               ),
               0
             );
-            return score / words.length > 0.1;
+            return score / words.length > 0.05;
           })
           // remove awkward connector words
           .map((sentence) => {
@@ -221,9 +243,10 @@ async function fetchLanguageMetadataEntry(language) {
     console.log(`Fetching metadata for ${language}...`);
     const query = languageTitleMap[language] || `${language} language`;
 
-    const wikiPage = fetchWikiPage(query);
-    const summary = wikiPage.then((page) => page.summary());
-    const info = wikiPage.then((page) => page.fullInfo());
+    const metadata = {
+      name: formatName(language),
+      sources: [],
+    };
 
     const kwfInfo = kwf.find(
       (item) =>
@@ -233,30 +256,37 @@ async function fetchLanguageMetadataEntry(language) {
         })
     );
 
-    const metadata = {
-      name: formatName(language),
-    };
+    const noWikiPage = NO_PAGE.some(
+      (l) => (languages.synonyms[l] || l) === language
+    );
 
-    const summaryContent = await summary.catch(errorReporter("summary"));
-
-    description = summaryContent
-      .replace(/\s*?\(.*?\)/g, "")
-      .replace(/\.(?=\w)/g, ". ") // some periods get no space after them. quick fix
-      .replace(/\s+/g, " "); // condense extra space
-    for (const [find, replace] of Object.entries(PHRASE_REPLACEMENTS)) {
-      description = description.replace(find, replace);
+    if (!kwfInfo && noWikiPage) {
+      return undefined;
     }
-    metadata.description = description;
 
     if (kwfInfo) {
       metadata.vitality = kwfInfo.vitality;
+      metadata.sources.push("https://kwf.gov.ph/mga-wika-ng-filipinas/");
     }
 
-    metadata.tag = (await info).general.iso3 || null;
-    metadata.sources = [
-      (await wikiPage).url(),
-      ...(kwfInfo ? ["http://kwf.gov.ph/mga-wika-ng-filipinas/"] : []),
-    ];
+    if (!noWikiPage) {
+      const wikiPage = fetchWikiPage(query);
+      const summary = wikiPage.then((page) => page.summary());
+      const info = wikiPage.then((page) => page.fullInfo());
+
+      const summaryContent = await summary.catch(errorReporter("summary"));
+
+      description = summaryContent
+        .replace(/\s*?\(.*?\)/g, "")
+        .replace(/\.(?=\w)/g, ". ") // some periods get no space after them. quick fix
+        .replace(/\s+/g, " "); // condense extra space
+      for (const [find, replace] of Object.entries(PHRASE_REPLACEMENTS)) {
+        description = description.replace(find, replace);
+      }
+      metadata.description = description;
+      metadata.tag = (await info).general.iso3 || null;
+      metadata.sources.push((await wikiPage).url());
+    }
 
     console.log(`Done fetching metadata for ${language}`);
     return [language, metadata];

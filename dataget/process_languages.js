@@ -83,7 +83,7 @@ const FORCE_SYNONYMS = [
     "adasen",
   ],
   // Use prevalent spelling; Dialects. Apparently Kalinga & Itneg share some dialects
-  ["kalinga", "kalingga", "calinga", "mabaka", "majokayong", "gubang"],
+  ["kalinga", "kalingga", "calinga", "mabaka", "majokayong", "gubang", "banao"],
   // Remove generic qualifiers without introducing ambiguity
   ["buhid", "buhid mangyan"],
   ["alangan", "alangan mangyan"],
@@ -130,7 +130,7 @@ const FORCE_SYNONYMS = [
     "dibabeen mulitaan",
   ], // vs iranun/illanun
   ["saranggani manobo", "manobo saranggani", "manobo-blit"],
-  ["agusan manobo", "manobo agusan"],
+  ["agusan manobo", "manobo agusan", "banwaon"],
   ["ata manobo", "ata-manobo", "manobo ata", "talaingod", "langilan"],
   ["iraya agta", "agta iraya"], // vs iraya mangyan
   [
@@ -224,7 +224,7 @@ const FORCE_SYNONYMS = [
   ["binatak", "batak"],
   // Spelling
   ["ivatan", "ibatan"],
-  // Place
+  // Place (Sitio Kailawan)
   ["ata manobo", "kailawan"],
   // Spellings
   ["magkonana", "magkunana", "kaunana"],
