@@ -9,7 +9,7 @@ setMessages("english", {
   areaInfoLabel: () => "About the locality",
   languageInfoLabel: () => "About the language",
   languageVitality: () => "Linguistic vitality",
-  fromWikipedia: () => "From Wikipedia",
+  fromWikipedia: () => "Excerpt from Wikipedia",
   vitalityExtinct: () => "Extinct",
   vitalityEndangered: () => "Endangered",
   vitalitySafe: () => "Safe",

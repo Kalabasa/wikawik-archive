@@ -2010,8 +2010,8 @@ function renderInfobarGeneral() {
 }
 
 function renderInfobarBaybayin() {
-  const sectionVisible =
-    state.currentPin && state.currentLanguage === "tagalog";
+  // const sectionVisible = state.currentPin && state.currentLanguage === "tagalog";
+  const sectionVisible = false;
 
   dom.infobarBaybayinSection.style.display = sectionVisible ? "block" : "none";
 
