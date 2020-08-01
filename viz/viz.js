@@ -689,7 +689,7 @@ const postInitData = mobx.action((data) => {
   dom.preloader.classList.add("preloader-done");
   setTimeout(() => dom.preloader.remove(), 200);
 
-  setTimeout(autoActivatePins, 2000);
+  // setTimeout(autoActivatePins, 2000);
 
   const introTime = 15000;
   setTimeout(() => (state.introMode = false), introTime);
