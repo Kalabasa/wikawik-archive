@@ -4,6 +4,8 @@ Wikawik is an interactive visualization of the numerous languages spoken in the 
 
 [Go to the app](https://kalabasa.github.io/wikawik/)
 
+![screenshot](https://kalabasa.github.io/wikawik/images/preview.png)
+
 ## How to use
 
 - Zoom and pan the map around to navigate.
