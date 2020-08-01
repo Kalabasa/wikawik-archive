@@ -1,10 +1,12 @@
+![banner](https://kalabasa.github.io/wikawik/images/preview.png)
+
 # Wikawik
 
 Wikawik is an interactive visualization of the numerous languages spoken in the Phlippines.
 
 [Go to the app](https://kalabasa.github.io/wikawik/)
 
-![screenshot](https://kalabasa.github.io/wikawik/images/preview.png)
+![banner](https://kalabasa.github.io/wikawik/images/app.png)
 
 ## How to use
 
