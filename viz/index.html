@@ -15,7 +15,7 @@
     />
     <link rel="icon" type="image/png" href="images/favicon.png" />
 
-    <title>Wikawik</title>
+    <title>Wikawik — Explore the languages of the Philippines</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
@@ -89,6 +89,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 30px;
         animation: enter-preloader-content 0.2s;
       }
       @keyframes enter-preloader-content {
@@ -321,7 +322,7 @@
             <div id="preloader-loader-i" class="preloader-loader-bar"></div>
           </div>
         </div>
-        Loading…
+        Loading Wikawik — Explore the languages of the Philippines
       </div>
     </div>
 
@@ -354,8 +355,12 @@
       </div>
 
       <div id="hud">
-        <button id="zoom-in-button" class="zoom-button">+</button>
-        <button id="zoom-out-button" class="zoom-button">−</button>
+        <button id="zoom-in-button" class="zoom-button" aria-label="Zoom in">
+          +
+        </button>
+        <button id="zoom-out-button" class="zoom-button" aria-label="Zoom out">
+          −
+        </button>
         <div id="phrases-box">
           <input
             tabindex="0"
@@ -365,18 +370,25 @@
             autocapitalize="off"
             spellcheck="false"
             data-message-placeholder="searchPhrases"
+            placeholder="Search for phrases…"
+            aria-label="Search"
           />
           <div id="phrases-options">
             <template id="phrases-item-template">
               <button tabindex="0" class="phrases-item">
-                <span class="phrases-item-title"></span>
-                <span class="phrases-item-indicator"></span>
+                <span class="phrases-item-title">Phrase title</span>
+                <span class="phrases-item-indicator">Phrase translations</span>
               </button>
             </template>
           </div>
         </div>
         <a id="logo-link" href="about.html" target="_blank">
-          <image id="logo" alt="wikawik logo" src="images/logo.png" />
+          <image
+            id="logo"
+            alt="wikawik logo"
+            src="images/logo.png"
+            alt="Wikawik"
+          />
         </a>
         <div id="footer">
           ©2020 Lean Rada.
@@ -385,15 +397,14 @@
             href="https://forms.gle/JYe2W9PjXogEcyMw8"
             target="_blank"
             data-message="sendFeedback"
-          ></a
+            >Send feedback</a
           >.
           <a
             class="footer-link"
             href="https://forms.gle/ntRBRPp8ZUyHUSE78"
             target="_blank"
             data-message="contribute"
-          >
-          </a
+            >Contribute translations</a
           >.
           <a
             class="footer-link language-button"
@@ -412,52 +423,60 @@
       </div>
 
       <div id="infobar" class="infobar">
-        <button id="infobar-close-button">
+        <button id="infobar-close-button" aria-label="Close">
           <div id="infobar-close-button-icon"></div>
         </button>
         <div id="infobar-container">
           <header id="infobar-header">
-            <h2 id="infobar-header-title"></h2>
-            <div id="infobar-header-subtitle"></div>
+            <h2 id="infobar-header-title">Phrase</h2>
+            <div id="infobar-header-subtitle">Language</div>
           </header>
           <section id="infobar-translation-section" class="infobar-section">
             <div
               class="infobar-section-label"
               data-message="translationListLabel"
-            ></div>
+            >
+              Translations in other languages
+            </div>
             <div id="infobar-translation-list">
               <template id="infobar-translation-item-template">
                 <div class="infobar-translation-item">
-                  <div class="infobar-translation-item-title"></div>
-                  <div class="infobar-translation-item-subtitle"></div>
+                  <div class="infobar-translation-item-title">Phrase</div>
+                  <div class="infobar-translation-item-subtitle">Language</div>
                 </div>
               </template>
             </div>
             <hr class="infobar-section-divider" />
           </section>
           <section id="infobar-baybayin-section" class="infobar-section">
-            <div
-              class="infobar-section-label"
-              data-message="inBaybayinScript"
-            ></div>
+            <div class="infobar-section-label" data-message="inBaybayinScript">
+              In Baybayin script
+            </div>
             <div id="infobar-baybayin"></div>
             <hr class="infobar-section-divider" />
           </section>
           <section id="infobar-locals-section" class="infobar-section">
-            <div
-              class="infobar-section-label"
-              data-message="localLanguages"
-            ></div>
-            <h2 id="infobar-locals-title" class="infobar-section-title"></h2>
-            <p id="infobar-locals-description" class="infobar-text"></p>
-            <p id="infobar-locals-chart-blurb" class="infobar-text"></p>
+            <div class="infobar-section-label" data-message="localLanguages">
+              Local languages
+            </div>
+            <h2 id="infobar-locals-title" class="infobar-section-title">
+              Language
+            </h2>
+            <p id="infobar-locals-description" class="infobar-text">
+              Description
+            </p>
+            <p id="infobar-locals-chart-blurb" class="infobar-text">
+              Language chart
+            </p>
             <div id="infobar-locals-chart">
               <template id="infobar-locals-chart-item-template">
                 <div class="infobar-locals-chart-item">
                   <div class="infobar-locals-chart-item-label">
                     <div class="infobar-locals-chart-item-label-container">
-                      <div class="infobar-locals-chart-item-name"></div>
-                      <div class="infobar-locals-chart-item-value"></div>
+                      <div class="infobar-locals-chart-item-name">Language</div>
+                      <div class="infobar-locals-chart-item-value">
+                        Percentage
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -466,24 +485,26 @@
             <hr class="infobar-section-divider" />
           </section>
           <section id="infobar-language-section" class="infobar-section">
-            <div
-              class="infobar-section-label"
-              data-message="languageInfoLabel"
-            ></div>
-            <h2 class="infobar-section-title" id="infobar-language-title"></h2>
+            <div class="infobar-section-label" data-message="languageInfoLabel">
+              About the language
+            </div>
+            <h2 class="infobar-section-title" id="infobar-language-title">
+              Language
+            </h2>
             <div id="infobar-language-code" class="infobar-card">
               <h3
                 id="infobar-language-code-label"
                 class="infobar-subheading"
                 data-message="languageCode"
-              ></h3>
+              >
+                ISO code
+              </h3>
               <span id="infobar-language-code-value"></span>
             </div>
             <div id="infobar-language-vitality" class="infobar-card">
-              <h3
-                class="infobar-subheading"
-                data-message="languageVitality"
-              ></h3>
+              <h3 class="infobar-subheading" data-message="languageVitality">
+                Linguistic vitality
+              </h3>
               <a
                 id="vitality-graphic-link"
                 href="https://en.wikipedia.org/wiki/Endangered_language#UNESCO_definitions"
@@ -494,17 +515,23 @@
                     class="vitality-legend-item"
                     id="vitality-legend-extinct"
                     data-message="vitalityExtinct"
-                  ></div>
+                  >
+                    Extinct
+                  </div>
                   <div
                     class="vitality-legend-item"
                     id="vitality-legend-endangered"
                     data-message="vitalityEndangered"
-                  ></div>
+                  >
+                    Endangered
+                  </div>
                   <div
                     class="vitality-legend-item"
                     id="vitality-legend-safe"
                     data-message="vitalitySafe"
-                  ></div>
+                  >
+                    Safe
+                  </div>
                 </div>
                 <div id="vitality-list">
                   <div
@@ -513,102 +540,127 @@
                     data-value="extinct"
                     data-message="vitalityCodeExtinct"
                     data-message-title="vitalityNameExtinct"
-                  ></div>
+                  >
+                    Extinct
+                  </div>
                   <div
                     class="vitality-item"
                     id="vitality-critically-endangered"
                     data-value="critically_endangered"
                     data-message="vitalityCodeCriticallyEndangered"
                     data-message-title="vitalityNameCriticallyEndangered"
-                  ></div>
+                  >
+                    Critically endangered
+                  </div>
                   <div
                     class="vitality-item"
                     id="vitality-severely-endangered"
                     data-value="severely_endangered"
                     data-message="vitalityCodeSeverelyEndangered"
                     data-message-title="vitalityNameSeverelyEndangered"
-                  ></div>
+                  >
+                    Severely endangered
+                  </div>
                   <div
                     class="vitality-item"
                     id="vitality-definitely-endangered"
                     data-value="definitely_endangered"
                     data-message="vitalityCodeDefinitelyEndangered"
                     data-message-title="vitalityNameDefinitelyEndangered"
-                  ></div>
+                  >
+                    Definitely endangered
+                  </div>
                   <div
                     class="vitality-item"
                     id="vitality-vulnerable"
                     data-value="vulnerable"
                     data-message="vitalityCodeVulnerable"
                     data-message-title="vitalityNameVulnerable"
-                  ></div>
+                  >
+                    Vulnerable
+                  </div>
                   <div
                     class="vitality-item"
                     id="vitality-safe"
                     data-value="safe"
                     data-message="vitalityCodeSafe"
                     data-message-title="vitalityNameSafe"
-                  ></div>
+                  >
+                    Safe
+                  </div>
                 </div>
               </a>
-              <div id="vitality-description" class="infobar-text"></div>
+              <div id="vitality-description" class="infobar-text">
+                Description about how the language is endangered and who are the
+                ones left using it.
+              </div>
             </div>
             <div
               id="infobar-language-description-source"
               class="infobar-text-note"
               data-message="fromWikipedia"
-            ></div>
+            >
+              Excerpt from Wikipedia
+            </div>
             <div
               id="infobar-language-description"
               class="infobar-text"
               lang="en"
-            ></div>
+            >
+              Description about the language
+            </div>
             <button
               id="infobar-language-description-expand-button"
               class="description-expand-button"
               data-message="readMore"
-            ></button>
+            >
+              Read more
+            </button>
             <hr class="infobar-section-divider" />
           </section>
           <section id="infobar-area-section" class="infobar-section">
-            <div
-              class="infobar-section-label"
-              data-message="areaInfoLabel"
-            ></div>
-            <h2 class="infobar-section-title" id="infobar-area-title"></h2>
+            <div class="infobar-section-label" data-message="areaInfoLabel">
+              About the locality
+            </div>
+            <h2 class="infobar-section-title" id="infobar-area-title">
+              Area name
+            </h2>
             <div
               id="infobar-area-description-source"
               class="infobar-text-note"
               data-message="fromWikipedia"
-            ></div>
-            <div
-              id="infobar-area-description"
-              class="infobar-text"
-              lang="en"
-            ></div>
+            >
+              Excerpt from Wikipedia
+            </div>
+            <div id="infobar-area-description" class="infobar-text" lang="en">
+              Description about the province or the locality
+            </div>
             <button
               id="infobar-area-description-expand-button"
               class="description-expand-button"
               data-message="readMore"
-            ></button>
+            >
+              Read more
+            </button>
             <hr class="infobar-section-divider" />
           </section>
           <section id="infobar-media-section" class="infobar-section">
-            <div
-              class="infobar-section-label"
-              data-message="mediaSectionLabel"
-            ></div>
+            <div class="infobar-section-label" data-message="mediaSectionLabel">
+              Related media
+            </div>
             <div id="infobar-media-list">
               <template id="infobar-media-item-template">
                 <div class="infobar-media-item">
                   <a class="infobar-media-item-link" target="_blank">
-                    <h2 class="infobar-media-item-title"></h2>
+                    <h2 class="infobar-media-item-title">Title</h2>
                   </a>
                   <div
                     class="infobar-media-item-description infobar-text"
                     lang="en"
-                  ></div>
-                  <div class="infobar-media-item-content"></div>
+                  >
+                    Description
+                  </div>
+                  <div class="infobar-media-item-content">Embed</div>
                 </div>
               </template>
             </div>
@@ -616,7 +668,9 @@
           </section>
           <div id="infobar-source-section" class="infobar-section">
             <div id="infobar-source-list">
-              <span id="infobar-source-label" data-message="source"></span>
+              <span id="infobar-source-label" data-message="source"
+                >Sources</span
+              >
             </div>
             <hr class="infobar-section-divider" />
           </div>
@@ -626,14 +680,15 @@
               href="https://forms.gle/JYe2W9PjXogEcyMw8"
               target="_blank"
               data-message="sendFeedback"
-            ></a>
+              >Send feedback</a
+            >
             <a
               class="infobar-footer-link"
               href="https://forms.gle/ntRBRPp8ZUyHUSE78"
               target="_blank"
               data-message="contribute"
+              >Contirbute translations</a
             >
-            </a>
           </div>
         </div>
       </div>
