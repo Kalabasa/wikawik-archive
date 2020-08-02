@@ -313,14 +313,6 @@ setTimeout(() => {
   initInterface();
 }, 0);
 
-// Debugging
-mobx.autorun(
-  () => console.debug("[TRACE]", JSON.parse(JSON.stringify(state))),
-  {
-    delay: 1000,
-  }
-);
-
 mobx.autorun(() => storeState(), {
   delay: 6000,
 });
