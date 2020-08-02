@@ -731,5 +731,19 @@
     <script data-order="0" data-src="media.js"></script>
     <script data-order="1" data-src="viz.js"></script>
     <script src="preloader.js" async defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      data-order="2"
+      data-src="https://www.googletagmanager.com/gtag/js?id=UA-141010266-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-141010266-1");
+    </script>
   </body>
 </html>
