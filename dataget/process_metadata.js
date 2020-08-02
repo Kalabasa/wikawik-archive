@@ -29,6 +29,7 @@ const PAGE_TITLES = {
   eskaya: "Eskayan language",
   "saranggani manobo": "Sarangani language",
   "pala'wan": "Palawano langauge",
+  umirey: "Umiray Dumaget language",
   "1300": "Metro Manila",
   "1247": "Cotabato",
   "1263": "South Cotabato",

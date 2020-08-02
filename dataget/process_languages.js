@@ -11,8 +11,8 @@ const kwfLanguages = require("./data/kwf.json");
 // Note: The goal of this project is to showcase the various langauges of the Philippines. There is a bias for minority langauges as they are rarely heard or seen. There is also a bias for visibility over accuracy.
 
 // filter out very small populations
-const MIN_PROPORTION_P = 0.08;
-const MIN_PROPORTION_Q = 0.25;
+const MIN_PROPORTION_P = 0.01;
+const MIN_PROPORTION_Q = 0.4;
 
 // Don't count these languages from the census
 const BLACKLIST = [
@@ -227,7 +227,7 @@ const FORCE_SYNONYMS = [
   // Place (Sitio Kailawan)
   ["ata manobo", "kailawan"],
   // Spellings
-  ["magkonana", "magkunana", "kaunana"],
+  ["magkonana", "magkunana"],
 ];
 
 // Disambiguiate language based on region
@@ -531,19 +531,22 @@ for (const [code, counts] of countMap.entries()) {
   }
 }
 
-const totals = [...countMap.entries()].reduce((acc, [code, counts]) => {
-  // area total
-  acc[code] =
-    (acc[code] || 0) +
-    Object.values(counts).reduce((acc2, count) => acc2 + count, 0);
+const tentativeTotals = [...countMap.entries()].reduce(
+  (acc, [code, counts]) => {
+    // area total
+    acc[code] =
+      (acc[code] || 0) +
+      Object.values(counts).reduce((acc2, count) => acc2 + count, 0);
 
-  // language total
-  for (const [language, count] of Object.entries(counts)) {
-    acc[language] = (acc[language] || 0) + count;
-  }
+    // language total
+    for (const [language, count] of Object.entries(counts)) {
+      acc[language] = (acc[language] || 0) + count;
+    }
 
-  return acc;
-}, {});
+    return acc;
+  },
+  {}
+);
 
 // find main province of each language
 const mainArea = new Map();
@@ -555,7 +558,7 @@ const mainArea = new Map();
     let topAreaCode;
     let topAreaCount = 0;
     for (const [code, counts] of countMap.entries()) {
-      const count = counts[code] || 0;
+      const count = (counts[language] || 0) / tentativeTotals[code];
       if (count > topAreaCount) {
         topAreaCount = count;
         topAreaCode = code;
@@ -573,11 +576,8 @@ for (const [code, counts] of countMap.entries()) {
       continue;
     }
 
-    const languageTotal = totals[language];
-    const exponent = 1.5 ** (Math.atan(languageTotal / 80 - 1) * (Math.PI / 2));
-
-    const p = (count / totals[code]) ** exponent;
-    const q = count / languageTotal;
+    const p = count / tentativeTotals[code];
+    const q = count / tentativeTotals[language];
 
     if (p < MIN_PROPORTION_P && q < MIN_PROPORTION_Q) {
       deletedCount += count;
@@ -589,6 +589,21 @@ for (const [code, counts] of countMap.entries()) {
     counts["_others"] = deletedCount;
   }
 }
+
+// recount totals
+const totals = [...countMap.entries()].reduce((acc, [code, counts]) => {
+  // area total
+  acc[code] =
+    (acc[code] || 0) +
+    Object.values(counts).reduce((acc2, count) => acc2 + count, 0);
+
+  // language total
+  for (const [language, count] of Object.entries(counts)) {
+    acc[language] = (acc[language] || 0) + count;
+  }
+
+  return acc;
+}, {});
 
 // add to master list
 const list = new Set();
