@@ -22,7 +22,7 @@ body {
   pointer-events: none;
 }
 .preloader-done {
-  opacity: 0;
+  opacity: 0.001;
 }
 
 #content {
