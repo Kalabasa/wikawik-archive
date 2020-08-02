@@ -78,12 +78,14 @@ body {
   border-bottom: solid 1px var(--color-neutral);
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
+  z-index: 2;
 }
 #zoom-out-button {
   right: 20px;
   bottom: 20px;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
+  z-index: 3;
 }
 .shift-infobar-bottom .zoom-button {
   transform: translateY(calc(-1 * var(--infobar-bottom-height)));
@@ -164,13 +166,16 @@ body {
 }
 
 #logo-link {
-  display: block;
-}
-#logo {
   position: absolute;
   display: block;
   left: 8px;
   bottom: 23px;
+  height: 50px;
+  z-index: 1;
+}
+#logo {
+  position: absolute;
+  display: block;
   height: 50px;
   filter: drop-shadow(0 1px 2px rgba(0, 64, 96, 0.8));
   transition: filter 1s;
@@ -182,15 +187,26 @@ body {
 #footer {
   position: absolute;
   left: 10px;
+  right: 10px;
   bottom: 3px;
   font-size: 0.7rem;
   white-space: nowrap;
   color: white;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 1);
+  overflow-x: auto;
+  z-index: 0;
 }
 .footer-link {
+  display: inline-block;
   padding: 10px 0 0;
+  text-align: center;
   color: white;
+}
+@media (pointer: coarse) {
+  .footer-link {
+    padding: 30px 0 0;
+    min-width: 48px;
+  }
 }
 
 /* ----------------------------------------------------------------------------
