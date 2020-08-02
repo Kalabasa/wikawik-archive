@@ -48,6 +48,7 @@ const NO_PAGE = [
 ];
 
 // Manually correct outdated or incorrect scraped information
+// KWF data seems outdated or outright incorrect
 const FORCE_METADATA = {
   // kapampangan: {
   // ??? https://iyil.ph/articles/kapamp%C3%A1ngan-language-is-definitely-endangered-unesco/
@@ -60,6 +61,22 @@ const FORCE_METADATA = {
   ambala: {
     // https://www.ethnologue.com/size-and-vitality/abc
     vitality: "severely_endangered",
+  },
+  dupaningan: {
+    // https://en.wikipedia.org/wiki/Languages_of_the_Philippines#2010_UNESCO_designation
+    vitality: "vulnerable",
+  },
+  pannon: {
+    // https://en.wikipedia.org/wiki/Languages_of_the_Philippines#2010_UNESCO_designation
+    vitality: "vulnerable",
+  },
+  manide: {
+    // https://en.wikipedia.org/wiki/Languages_of_the_Philippines#2010_UNESCO_designation
+    vitality: "severely_endangered",
+  },
+  "isarog agta": {
+    // https://en.wikipedia.org/wiki/Languages_of_the_Philippines#2010_UNESCO_designation
+    vitality: "critically_endangered",
   },
 };
 
