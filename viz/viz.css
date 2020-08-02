@@ -21,6 +21,9 @@ body {
 #preloader {
   pointer-events: none;
 }
+.preloader-done {
+  opacity: 0;
+}
 
 #content {
   position: relative;
