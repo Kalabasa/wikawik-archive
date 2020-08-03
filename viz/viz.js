@@ -67,6 +67,7 @@ let state = {
   mapWidth: 0,
   mapHeight: 0,
 
+  introTextDismissed: false,
   introMode: true,
 
   /** @type {'tagalog'|'english'} */
@@ -188,6 +189,7 @@ let state = {
 
   get storeableState() {
     return {
+      introTextDismissed: this.introTextDismissed,
       locale: this.locale,
     };
   },
@@ -219,6 +221,8 @@ const ui = {
 const dom = {
   preloader: document.getElementById("preloader"),
   logo: document.getElementById("logo"),
+  introText: document.getElementById("intro-text"),
+  introTextDismissButton: document.getElementById("intro-text-dismiss-button"),
   languageButtons: document.querySelectorAll(".language-button"),
   mapbox: document.getElementById("mapbox"),
   map: document.getElementById("map"),
@@ -455,6 +459,7 @@ function onPopState(event) {
 }
 
 function onInteract() {
+  dismissIntroText();
   inhibitAutoPin(2000);
 
   if (state.introMode) {
@@ -559,6 +564,13 @@ const onInfobarCloseClick = mobx.action(() => {
   deselectAll();
 });
 
+const dismissIntroText = mobx.action((force = false) => {
+  if (force || state.introTextDismissed) {
+    state.introTextDismissed = true;
+    dom.introText.classList.add("intro-text-dismissed");
+  }
+});
+
 const onPhrasesInputFocus = mobx.action(() => {
   deselectAll();
   state.phrasesInputOptions = Object.entries(state.phrases)
@@ -635,6 +647,8 @@ function initInterface() {
   dom.overlay.addEventListener("mousedown", onOverlayMouseDown);
   dom.map.addEventListener("click", onMapClick);
 
+  dom.introTextDismissButton.addEventListener("click", dismissIntroText);
+
   dom.zoomInButton.addEventListener("click", zoomIn);
   dom.zoomOutButton.addEventListener("click", zoomOut);
 
@@ -679,7 +693,11 @@ const postInitData = mobx.action((data) => {
   state.data = data;
 
   dom.preloader.classList.add("preloader-done");
-  setTimeout(() => dom.preloader.remove(), 300000);
+  setTimeout(() => dom.preloader.remove(), 1000);
+
+  if (state.introTextDismissed) {
+    dismissIntroText(true);
+  }
 
   setTimeout(autoActivatePins, 2000);
 
