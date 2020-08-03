@@ -84,6 +84,9 @@
         flex-direction: column;
         align-items: center;
         margin: 30px;
+        font-size: 25px;
+        font-weight: bold;
+        letter-spacing: 2px;
         animation: enter-preloader-content 0.2s;
       }
       @keyframes enter-preloader-content {
@@ -277,18 +280,6 @@
         filter: blur(4px) contrast(20);
         mix-blend-mode: screen;
       }
-      #preloader-text {
-        font-size: 25px;
-        font-weight: bold;
-        letter-spacing: 2px;
-      }
-      #preloader-text-description {
-        margin-top: 15px;
-        max-width: 400px;
-        font-size: 15px;
-        line-height: 1.4;
-        opacity: 0.4;
-      }
       #content {
         z-index: 0;
       }
@@ -328,16 +319,82 @@
             <div id="preloader-loader-i" class="preloader-loader-bar"></div>
           </div>
         </div>
-        <span id="preloader-text">
-          Loading…
+        Loading…
+      </div>
+    </div>
+
+    <div id="hud">
+      <div id="intro-text">
+        <span>
+          <strong>Wikawik</strong> is an interactive visualization of the
+          various languages spoken in the Philippines. Use this web app to
+          discover and explore the languages of the Phlippines via the
+          interactive map. Select common phrases via the search bar to be
+          translated into local languages across the country.
         </span>
-        <span id="preloader-text-description">
-          Wikawik is an interactive visualization of the various languages
-          spoken in the Philippines. Use this web app to discover and explore
-          the languages of the Phlippines via the interactive map. It shows
-          common phrases, like “good morning”, translated into local languages
-          across the country.
-        </span>
+        <button id="intro-text-dismiss-button">Dismiss</button>
+      </div>
+
+      <button id="zoom-in-button" class="zoom-button" aria-label="Zoom in">
+        +
+      </button>
+      <button id="zoom-out-button" class="zoom-button" aria-label="Zoom out">
+        −
+      </button>
+
+      <div id="phrases-box">
+        <input
+          tabindex="0"
+          id="phrases-input"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          data-message-placeholder="searchPhrases"
+          placeholder="Search for phrases…"
+          aria-label="Search"
+        />
+        <div id="phrases-options">
+          <template id="phrases-item-template">
+            <button tabindex="0" class="phrases-item">
+              <span class="phrases-item-title">Phrase title</span>
+              <span class="phrases-item-indicator">Phrase translations</span>
+            </button>
+          </template>
+        </div>
+      </div>
+
+      <a id="logo-link" href="about.html" target="_blank">
+        <image
+          id="logo"
+          alt="wikawik logo"
+          src="images/logo.png"
+          alt="Wikawik"
+        />
+      </a>
+      <div id="footer">
+        ©2020 Lean Rada.
+        <a
+          class="footer-link"
+          href="https://forms.gle/JYe2W9PjXogEcyMw8"
+          target="_blank"
+          data-message="sendFeedback"
+          >Send feedback</a
+        >.
+        <a
+          class="footer-link"
+          href="https://forms.gle/ntRBRPp8ZUyHUSE78"
+          target="_blank"
+          data-message="contribute"
+          >Contribute translations</a
+        >.
+        <a class="footer-link language-button" href="#" data-language="english"
+          >EN</a
+        >
+        |
+        <a class="footer-link language-button" href="#" data-language="tagalog"
+          >TL
+        </a>
       </div>
     </div>
 
@@ -366,74 +423,6 @@
           <template id="label-template">
             <div class="label"></div>
           </template>
-        </div>
-      </div>
-
-      <div id="hud">
-        <button id="zoom-in-button" class="zoom-button" aria-label="Zoom in">
-          +
-        </button>
-        <button id="zoom-out-button" class="zoom-button" aria-label="Zoom out">
-          −
-        </button>
-        <div id="phrases-box">
-          <input
-            tabindex="0"
-            id="phrases-input"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            data-message-placeholder="searchPhrases"
-            placeholder="Search for phrases…"
-            aria-label="Search"
-          />
-          <div id="phrases-options">
-            <template id="phrases-item-template">
-              <button tabindex="0" class="phrases-item">
-                <span class="phrases-item-title">Phrase title</span>
-                <span class="phrases-item-indicator">Phrase translations</span>
-              </button>
-            </template>
-          </div>
-        </div>
-        <a id="logo-link" href="about.html" target="_blank">
-          <image
-            id="logo"
-            alt="wikawik logo"
-            src="images/logo.png"
-            alt="Wikawik"
-          />
-        </a>
-        <div id="footer">
-          ©2020 Lean Rada.
-          <a
-            class="footer-link"
-            href="https://forms.gle/JYe2W9PjXogEcyMw8"
-            target="_blank"
-            data-message="sendFeedback"
-            >Send feedback</a
-          >.
-          <a
-            class="footer-link"
-            href="https://forms.gle/ntRBRPp8ZUyHUSE78"
-            target="_blank"
-            data-message="contribute"
-            >Contribute translations</a
-          >.
-          <a
-            class="footer-link language-button"
-            href="#"
-            data-language="english"
-            >EN</a
-          >
-          |
-          <a
-            class="footer-link language-button"
-            href="#"
-            data-language="tagalog"
-            >TL
-          </a>
         </div>
       </div>
 

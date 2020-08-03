@@ -22,7 +22,7 @@ body {
   pointer-events: none;
 }
 .preloader-done {
-  opacity: 0.001;
+  opacity: 0;
 }
 
 #content {
@@ -44,6 +44,33 @@ body {
 }
 #hud > * {
   pointer-events: auto;
+}
+
+#intro-text {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 80px;
+  padding: 15px 20px;
+  max-width: 300px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  background: white;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.1s;
+}
+#intro-text-dismiss-button {
+  background: none;
+  border: none;
+  color: var(--color-positive-text);
+  text-decoration: underline;
+  font-size: inherit;
+  padding: 0;
+  text-transform: unset;
+}
+.intro-text-dismissed {
+  opacity: 0;
 }
 
 .zoom-button {
