@@ -71,6 +71,8 @@ body {
 }
 .intro-text-dismissed {
   opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s, visibility 0.1s;
 }
 
 .zoom-button {
