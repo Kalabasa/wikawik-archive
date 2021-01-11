@@ -54,8 +54,6 @@ setMessages("english", {
         ` families in <strong>${place}</strong> speak${
           numerator === 1 ? "s" : ""
         } <strong>${language}</strong> as their primary language at home.`,
-  languageChartBlurb: (place) =>
-    `The various languages spoken in ${place} are illustrated in the following interactive chart:`,
   others: () => "Others",
   readMore: () => "Read more",
   mediaSectionLabel: () => "Related media",

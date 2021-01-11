@@ -275,9 +275,6 @@ const dom = {
   infobarLocalsDescription: document.getElementById(
     "infobar-locals-description"
   ),
-  infobarLocalsChartBlurb: document.getElementById(
-    "infobar-locals-chart-blurb"
-  ),
   infobarLocalsChart: document.getElementById("infobar-locals-chart"),
   infobarLocalsChartItemTemplate: document.getElementById(
     "infobar-locals-chart-item-template"
@@ -1747,7 +1744,6 @@ function emptyInfoBar() {
       highlighted: false,
       title: "",
       description: "",
-      blurb: "",
       items: [],
     },
     mediaItems: [],
@@ -1866,7 +1862,6 @@ const populateInfobar = mobx.action(() => {
       highlighted: !!state.currentLanguage,
       title: "",
       description: "",
-      blurb: state.messages.languageChartBlurb(areaMetadata.simpleName),
       items: languageCountEntries
         .map(([language, count]) => ({
           language,
@@ -2189,7 +2184,6 @@ function renderInfobarLocalsSection() {
     dom.infobarLocalsTitle.innerHTML = state.infobar.localsInfo.title;
     dom.infobarLocalsDescription.innerHTML =
       state.infobar.localsInfo.description;
-    dom.infobarLocalsChartBlurb.innerHTML = state.infobar.localsInfo.blurb;
 
     const chartItemsD3 = dom.infobarLocalsChartD3
       .classed(
