@@ -52,8 +52,6 @@ setMessages("tagalog", {
           : `Humigit-kumulang na <strong>${numerator} sa bawat ${denominator}</strong> ` +
             ([4, 6, 9].includes(denominator % 10) ? "na" : "")) +
         ` pamilya sa <strong>${lugar}</strong> ay nagsasalita ng <strong>${wika}</strong> bilang panghunahing wika sa tahanan.`,
-  languageChartBlurb: (lugar) =>
-    `Ang iba’t ibang mga wika na umiiral sa ${lugar} ay nakalarawan sa sumusunod na interaktibong tsart:`,
   others: () => "IbaPa",
   readMore: () => "Magbasa pa",
   mediaSectionLabel: () => "Mga tunog at larawan sa naturang wika",
