@@ -20,6 +20,11 @@ Wikawik is an interactive visualization of the numerous languages spoken in the 
 - Use the Contribute form for adding translations.
   - Or make a PR directly in data directory
 
+## How to run
+
+- Using a simple local HTTP server, serve the `viz` directory (e.g., `npx serve viz`).
+- Open local server in a web browser at path `/`.
+
 ## Methodology
 
 Data is obtained from the following sources:
